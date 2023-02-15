@@ -12,8 +12,8 @@ const customMedia = generateMedia({
 export const WhatsIcon = styled(Whatsapp)`
   width: 26px;
   height: 26px;
-  fill: var(--font-color);
   margin-left: 10px;
+  fill: var(--font-color);
 `;
 
 export const Transparent = styled.div`
@@ -57,7 +57,7 @@ export const ModalPhotobook = styled.div`
 export const closeButton = styled.span`
   font-size: 25px;
   display: flex;
-  color: var(--title-color);
+  color: var(--title-modal-color);
   font-weight: 700;
   position: absolute;
   top: 13px;
@@ -95,7 +95,7 @@ export const AlertCenterPhotobook = styled.div`
   .modalTitle {
     width: 100%;
     position: relative;
-    color: var(--title-color);
+    color: var(--title-modal-color);
     background: var(--default-color);
     font-size: 1.125rem;
     line-height: 22px;
@@ -278,7 +278,7 @@ export const AlertCenterPhotobook = styled.div`
 
         :hover {
           background: var(--default-color);
-          color: var(--title-color);
+          color: var(--title-modal-color);
         }
 
         svg {

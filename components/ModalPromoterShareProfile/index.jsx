@@ -1,20 +1,19 @@
+import React from "react";
 import { Copy } from "@styled-icons/evaicons-solid/Copy";
 import * as S from "./styles";
 
-export default function ModalSharePubliclist({
-  sharePublicListModal,
-  setSharePublicListModal,
-  detailList,
+export default function ModalPromoterShareProfile({
+  shareModal,
+  setShareModal,
+  allProfileData,
   copyText,
-  mktName,
-  appUrl,
 }) {
   return (
-    <S.ModalPhotobook className={sharePublicListModal}>
+    <S.ModalPhotobook className={shareModal}>
       <S.Transparent
         onClick={() => {
           document.body.style.overflow = "auto";
-          setSharePublicListModal("inactive");
+          setShareModal("inactive");
         }}
       />
 
@@ -24,7 +23,7 @@ export default function ModalSharePubliclist({
           <S.closeButton
             onClick={() => {
               document.body.style.overflow = "auto";
-              setSharePublicListModal("inactive");
+              setShareModal("inactive");
             }}
           >
             x
@@ -37,29 +36,38 @@ export default function ModalSharePubliclist({
               <input
                 readOnly
                 type="text"
-                value={`${appUrl}/publiclist/${detailList.code}`}
+                value={`${process.env.NEXT_PUBLIC_REACT_APP_URL}/profilepublicpromoter/${allProfileData.id}`}
               />
               <button
                 className="copyButton"
                 onClick={() =>
-                  copyText(`${appUrl}/publiclist/${detailList.code}`)
+                  copyText(
+                    `${process.env.NEXT_PUBLIC_REACT_APP_URL}/profilepublicpromoter/${allProfileData.id}`
+                  )
                 }
               >
                 <Copy />
               </button>
             </div>
             <div className="boxButtons">
-              {typeof window !== "undefined" && localStorage.getItem("nome") ? (
+              {process.env.NEXT_PUBLIC_REACT_APP_NAME &&
+              process.env.NEXT_PUBLIC_REACT_APP_URL &&
+              typeof window !== "undefined" &&
+              localStorage.getItem("nome") ? (
                 <a
                   rel="noreferrer"
                   className="socialMediaButton positiveButton"
                   href={
-                    detailList
+                    allProfileData
                       ? `https://api.whatsapp.com/send?text= Olá, ${localStorage.getItem(
                           "nome"
-                        )} acaba de te enviar o link de uma lista no ${mktName}. Clique no link abaixo para acessá-lo. ${appUrl}/publiclist/${
-                          detailList.code
-                        }`
+                        )} acaba de compartilhar contigo o perfil do ${
+                          allProfileData.name
+                        } no ${
+                          process.env.NEXT_PUBLIC_REACT_APP_NAME
+                        }. Click no link abaixo para acessá-lo. ${
+                          process.env.NEXT_PUBLIC_REACT_APP_URL
+                        }/profilepublicpromoter/${allProfileData?.id}`
                       : ""
                   }
                   target="_blank"
@@ -72,8 +80,8 @@ export default function ModalSharePubliclist({
                   rel="noreferrer"
                   className="socialMediaButton positiveButton"
                   href={
-                    detailList
-                      ? `https://api.whatsapp.com/send?text= Olá, acabo de te enviar o link de uma lista no ${mktName}. Clique no link abaixo para acessá-lo. ${appUrl}/publiclist/${detailList.code}`
+                    allProfileData
+                      ? `https://api.whatsapp.com/send?text= Olá, acabo de compartilhar contigo o perfil do  ${allProfileData.name} no ${process.env.NEXT_PUBLIC_REACT_APP_NAME}. Click no link abaixo para acessá-lo. ${process.env.NEXT_PUBLIC_REACT_APP_URL}/profilepublicpromoter/${allProfileData?.id}`
                       : ""
                   }
                   target="_blank"
