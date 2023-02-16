@@ -47,9 +47,7 @@ const defaultLayout = [
     "configurable-attributes-color": "#231F20",
     "configurable-attributes-color-hover": "#231F20",
     "configurable-attributes-bgcolor": "#ffffff",
-    "configurable-attributes-bgcolor-hover": "##E5F7FE"
+    "configurable-attributes-bgcolor-hover": "##E5F7FE",
   },
-]
-;
-
+];
 export default defaultLayout;
