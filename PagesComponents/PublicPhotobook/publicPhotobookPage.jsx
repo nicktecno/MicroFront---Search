@@ -1,44 +1,45 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import * as S from "./styles";
 
 import Loading from "../../components/Loading";
 
-import { ShareAlt } from "@styled-icons/boxicons-solid/ShareAlt";
-
 import { User } from "@styled-icons/boxicons-regular/User";
 
-import notification from "../../services/notification";
+import { ShareAlt } from "@styled-icons/boxicons-solid/ShareAlt";
 
-import { useRouter } from "next/router";
+import notification from "../../services/notification";
 
 import BoxPhotobookPublicDataPhotobook from "../../components/BoxPhotobookPublicDataPhotobook";
 import BoxWishListPublicDataWishList from "../../components/BoxWishListPublicDataWishList";
 import ModalPromoterShareProfile from "../../components/ModalPromoterShareProfile";
 
-function ProfilePublicPromoterComponent({
-  companyId,
+function PublicPhotobookComponent({
+  api,
+  wishListApi,
   appUrl,
   appHeaderUrl,
-  appImages,
-  wishListApi,
-  api,
+  appImagesUrl,
+  companyId,
   setCartLength,
   mktName,
-  routeTranslations,
 }) {
-  const history = useRouter();
-  const { id } = history.query;
   const [loading, setLoading] = useState(false);
   const [loadingFunctions, setLoadingFunctions] = useState(false);
   const [profileData, setProfileData] = useState(false);
   const [publicWishLists, setPublicWishLists] = useState([]);
   const [shareModal, setShareModal] = useState("inactive");
 
-  const [activeMyPhotobook, setActiveMyPhotobook] = useState("active");
+  const [activeMyPhotobook, setActiveMyPhotobook] = useState("inactive");
   const [activeWishLists, setActiveWishLists] = useState("inactive");
+  const [activeFilterPhotobook, setActiveFilterPhotobook] = useState("active");
 
   const [myPhotobooks, setMyPhotobooks] = useState([]);
+  const [filterPhotobook, setFilterPhotobook] = useState([]);
+
+  const history = useRouter();
+  const { id } = history.query;
 
   async function loadPhotobooks() {
     setLoadingFunctions(true);
@@ -55,7 +56,14 @@ function ProfilePublicPromoterComponent({
         }
       );
 
-      setMyPhotobooks(responseList.data);
+      const filter = responseList.data.filter(
+        (list) => list.id === parseInt(id[1])
+      );
+      const filterAll = responseList.data.filter(
+        (list) => list.id !== parseInt(id[1])
+      );
+      setFilterPhotobook(filter);
+      setMyPhotobooks(filterAll);
       setLoadingFunctions(false);
     } catch (e) {
       if (e.response?.data.message === "Não Autorizado.") {
@@ -123,12 +131,17 @@ function ProfilePublicPromoterComponent({
         }, 3000);
       } else {
         console.log(e);
-        notification("Erro ao projetos públicos", "error");
+        notification("Erro a listas públicos", "error");
 
         setLoadingFunctions(false);
         window.location.href = "/findpromoters";
       }
     }
+  }
+
+  function copyText(link) {
+    notification("Link copiado", "success");
+    navigator.clipboard.writeText(link);
   }
 
   useEffect(() => {
@@ -140,8 +153,15 @@ function ProfilePublicPromoterComponent({
   }, [history]);
 
   async function handleFunctionsPhotoboook(option) {
+    if (option === "activeFilterPhotobook") {
+      setActiveFilterPhotobook("active");
+      setActiveMyPhotobook("inactive");
+      setActiveWishLists("inactive");
+    }
+
     if (option === "activeMyPhotobook") {
       setActiveMyPhotobook("active");
+      setActiveFilterPhotobook("inactive");
       setActiveWishLists("inactive");
     }
     if (option === "activeWishLists") {
@@ -150,12 +170,8 @@ function ProfilePublicPromoterComponent({
       }
       setActiveWishLists("active");
       setActiveMyPhotobook("inactive");
+      setActiveFilterPhotobook("inactive");
     }
-  }
-
-  function copyText(link) {
-    notification("Link copiado", "success");
-    navigator.clipboard.writeText(link);
   }
 
   return (
@@ -179,7 +195,7 @@ function ProfilePublicPromoterComponent({
                   {profileData.cover !== null ? (
                     <div className="customContainerBanner">
                       <img
-                        src={`${appImages}/${profileData.cover}`}
+                        src={`${appImagesUrl}/${profileData.cover}`}
                         alt="Meu banner"
                       />
                     </div>
@@ -196,7 +212,7 @@ function ProfilePublicPromoterComponent({
                     <div className="containerImage">
                       {profileData.img_profile !== null ? (
                         <img
-                          src={`${appImages}/${profileData.img_profile}`}
+                          src={`${appImagesUrl}/${profileData.img_profile}`}
                           alt="Meu perfil"
                         />
                       ) : (
@@ -212,6 +228,9 @@ function ProfilePublicPromoterComponent({
                     }
                   >
                     <div className="containerDescription">
+                      <div className="description">
+                        O Photobook pesquisado pertence a:
+                      </div>
                       <div className="title">{profileData.name}</div>
                       {profileData.description !== null && (
                         <div className="description">
@@ -239,12 +258,20 @@ function ProfilePublicPromoterComponent({
                   <div className="containerFunctionButtons">
                     <div className="containerUnlockedButtons">
                       <button
+                        className={activeFilterPhotobook}
+                        onClick={() =>
+                          handleFunctionsPhotoboook("activeFilterPhotobook")
+                        }
+                      >
+                        PHOTOBOOK PESQUISADO
+                      </button>
+                      <button
                         className={activeMyPhotobook}
                         onClick={() =>
                           handleFunctionsPhotoboook("activeMyPhotobook")
                         }
                       >
-                        PHOTOBOOK
+                        OUTROS PHOTOBOOKS
                       </button>
                       <button
                         className={activeWishLists}
@@ -261,6 +288,34 @@ function ProfilePublicPromoterComponent({
                       <Loading />
                     ) : (
                       <>
+                        {activeFilterPhotobook === "active" && (
+                          <>
+                            {filterPhotobook.length > 0 && !loadingFunctions ? (
+                              <>
+                                <div className="containerBoxPhotobook">
+                                  {filterPhotobook.map(
+                                    (photobook, photobookIndex) => (
+                                      <BoxPhotobookPublicDataPhotobook
+                                        profileData={profileData}
+                                        photobookData={photobook}
+                                        key={photobookIndex}
+                                        setCartLength={setCartLength}
+                                        wishListApi={wishListApi}
+                                        appHeaderUrl={appHeaderUrl}
+                                        appUrl={appUrl}
+                                        mktName={mktName}
+                                      />
+                                    )
+                                  )}
+                                </div>
+                              </>
+                            ) : (
+                              <div className="containerText">
+                                Photobook pesquisado inexistente
+                              </div>
+                            )}
+                          </>
+                        )}
                         {activeMyPhotobook === "active" && (
                           <>
                             {myPhotobooks.length > 0 && !loadingFunctions ? (
@@ -269,9 +324,9 @@ function ProfilePublicPromoterComponent({
                                   {myPhotobooks.map(
                                     (photobook, photobookIndex) => (
                                       <BoxPhotobookPublicDataPhotobook
-                                        key={photobookIndex}
                                         profileData={profileData}
                                         photobookData={photobook}
+                                        key={photobookIndex}
                                         setCartLength={setCartLength}
                                         wishListApi={wishListApi}
                                         appHeaderUrl={appHeaderUrl}
@@ -297,8 +352,8 @@ function ProfilePublicPromoterComponent({
                                   {publicWishLists.map(
                                     (wishlist, wishlistIndex) => (
                                       <BoxWishListPublicDataWishList
-                                        key={wishlistIndex}
                                         photobookData={wishlist}
+                                        key={wishlistIndex}
                                       />
                                     )
                                   )}
@@ -306,7 +361,7 @@ function ProfilePublicPromoterComponent({
                               </>
                             ) : (
                               <div className="containerText">
-                                Não há Projetos públicos vinculados a esse
+                                Não há listas públicos vinculados a esse
                                 promotor
                               </div>
                             )}
@@ -327,4 +382,4 @@ function ProfilePublicPromoterComponent({
   );
 }
 
-export default ProfilePublicPromoterComponent;
+export default PublicPhotobookComponent;

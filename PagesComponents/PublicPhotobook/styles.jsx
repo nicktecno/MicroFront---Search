@@ -118,7 +118,7 @@ export const GeneralContainer = styled.div`
       display: flex;
       justify-content: center;
       width: 90%;
-      color: #000;
+      color: #343a1c;
       align-items: center;
     }
   }
@@ -165,14 +165,14 @@ export const GeneralContainer = styled.div`
           justify-content:center;
           width:100%;
           padding:0px;
-          margin-top:35px;
+          margin-top:40px;
         
       `}
     }
     .containerButtons {
       display: flex;
-      justify-content: flex-end;
       width: 40%;
+      justify-content: flex-end;
       align-items: center;
       gap: 15px;
 
@@ -192,9 +192,17 @@ export const GeneralContainer = styled.div`
         align-items: center;
         transition: 0.3s;
         font-weight: bold;
+
         cursor: pointer;
+
+        &:hover {
+        }
+
         &.configure {
-          background: var(--default-color-hover);
+          background: #ccc;
+          &:hover {
+            background: #ccc;
+          }
         }
 
         span {
@@ -226,7 +234,7 @@ export const ContainerPhotobookFunctions = styled.div`
     width: 100%;
     border-bottom: 4px solid var(--default-color);
 
-    ${customMedia.lessThan("tablet")`
+    ${customMedia.lessThan("1016px")`
           flex-direction:column;
         
       `}
@@ -234,12 +242,13 @@ export const ContainerPhotobookFunctions = styled.div`
     button {
       border: 0px;
       background: white;
-      width: 170px;
-      padding: 10px 0px;
+      width: 200px;
+      padding: 10px 2px;
       transition: 0.3s;
+      font-weight: 600;
       border: solid 2px transparent;
-      border-bottom: none !important;
-      ${customMedia.lessThan("tablet")`
+      border-bottom: 0px solid transparent !important;
+      ${customMedia.lessThan("1016px")`
         width:50%;
         
       `}
@@ -258,7 +267,7 @@ export const ContainerPhotobookFunctions = styled.div`
     .containerUnlockedButtons {
       display: flex;
 
-      ${customMedia.lessThan("tablet")`
+      ${customMedia.lessThan("1016px")`
         width:100%;
         
       `}
@@ -267,7 +276,7 @@ export const ContainerPhotobookFunctions = styled.div`
     .containerFirstButtons {
       display: flex;
 
-      ${customMedia.lessThan("tablet")`
+      ${customMedia.lessThan("1016px")`
         width:100%;
         
       `}
@@ -281,27 +290,6 @@ export const ContainerDataFunctions = styled.div`
   flex-direction: column;
   max-height: 65vh;
   overflow: auto;
-
-  ::-webkit-scrollbar {
-    width: 7px;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px #f4f4f5;
-    border-radius: 10px;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #c7c7c7;
-    border-radius: 5px;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #ccc;
-  }
 
   .boxNothing {
     display: flex;
@@ -342,28 +330,8 @@ export const ContainerDataFunctions = styled.div`
     overflow: auto;
     gap: 10px;
     margin-top: 10px;
-
-    ::-webkit-scrollbar {
-      width: 7px;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 5px #f4f4f5;
-      border-radius: 10px;
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 5px;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-      background: #ccc;
-    }
   }
+
   .containerText {
     min-height: 100px;
     display: flex;
@@ -376,7 +344,7 @@ export const ContainerDataFunctions = styled.div`
 export const closeButton = styled.span`
   font-size: 25px;
   display: flex;
-  color: var(--title-modal-color);
+  color: var(--tile-color);
   font-weight: 700;
   position: absolute;
   top: 13px;
@@ -392,6 +360,7 @@ export const closeButton = styled.span`
     `}
 
   :hover {
+    color: var(--tile-color);
   }
 `;
 

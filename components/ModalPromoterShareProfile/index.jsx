@@ -7,6 +7,8 @@ export default function ModalPromoterShareProfile({
   setShareModal,
   allProfileData,
   copyText,
+  appUrl,
+  mktName,
 }) {
   return (
     <S.ModalPhotobook className={shareModal}>
@@ -36,13 +38,13 @@ export default function ModalPromoterShareProfile({
               <input
                 readOnly
                 type="text"
-                value={`${process.env.NEXT_PUBLIC_REACT_APP_URL}/profilepublicpromoter/${allProfileData.id}`}
+                value={`${appUrl}/profilepublicpromoter/${allProfileData.id}`}
               />
               <button
                 className="copyButton"
                 onClick={() =>
                   copyText(
-                    `${process.env.NEXT_PUBLIC_REACT_APP_URL}/profilepublicpromoter/${allProfileData.id}`
+                    `${appUrl}/profilepublicpromoter/${allProfileData.id}`
                   )
                 }
               >
@@ -50,8 +52,8 @@ export default function ModalPromoterShareProfile({
               </button>
             </div>
             <div className="boxButtons">
-              {process.env.NEXT_PUBLIC_REACT_APP_NAME &&
-              process.env.NEXT_PUBLIC_REACT_APP_URL &&
+              {mktName &&
+              appUrl &&
               typeof window !== "undefined" &&
               localStorage.getItem("nome") ? (
                 <a
@@ -63,11 +65,9 @@ export default function ModalPromoterShareProfile({
                           "nome"
                         )} acaba de compartilhar contigo o perfil do ${
                           allProfileData.name
-                        } no ${
-                          process.env.NEXT_PUBLIC_REACT_APP_NAME
-                        }. Click no link abaixo para acessá-lo. ${
-                          process.env.NEXT_PUBLIC_REACT_APP_URL
-                        }/profilepublicpromoter/${allProfileData?.id}`
+                        } no ${mktName}. Click no link abaixo para acessá-lo. ${appUrl}/profilepublicpromoter/${
+                          allProfileData?.id
+                        }`
                       : ""
                   }
                   target="_blank"
@@ -81,7 +81,7 @@ export default function ModalPromoterShareProfile({
                   className="socialMediaButton positiveButton"
                   href={
                     allProfileData
-                      ? `https://api.whatsapp.com/send?text= Olá, acabo de compartilhar contigo o perfil do  ${allProfileData.name} no ${process.env.NEXT_PUBLIC_REACT_APP_NAME}. Click no link abaixo para acessá-lo. ${process.env.NEXT_PUBLIC_REACT_APP_URL}/profilepublicpromoter/${allProfileData?.id}`
+                      ? `https://api.whatsapp.com/send?text= Olá, acabo de compartilhar contigo o perfil do  ${allProfileData.name} no ${mktName}. Click no link abaixo para acessá-lo. ${appUrl}/profilepublicpromoter/${allProfileData?.id}`
                       : ""
                   }
                   target="_blank"

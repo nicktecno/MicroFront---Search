@@ -7,21 +7,22 @@ import { useContext } from "react";
 import api from "../../services/api";
 import wishListApi from "../../services/msWishList";
 
-import ProfilePublicPromoterComponent from "./profilePublicPromoterPage";
+import PublicPhotobookComponent from "./publicPhotobookPage";
 
-const ProfilePublicPromoterPage = () => {
+const PublicPhotobookPage = () => {
   const { routeTranslations } = useLang();
   const { validaLogin } = useContext(Context);
   const { setCartLength } = useCart();
+
   const mktName = process.env.NEXT_PUBLIC_REACT_APP_NAME;
   const companyId = process.env.NEXT_PUBLIC_REACT_APP_COMPANY_ID;
   const appUrl = process.env.NEXT_PUBLIC_REACT_APP_URL;
   const appHeaderUrl = process.env.NEXT_PUBLIC_REACT_APP_HEADER_URL;
-  const appImages = process.env.NEXT_PUBLIC_REACT_APP_IMAGES_URL;
+  const appImagesUrl = process.env.NEXT_PUBLIC_REACT_APP_IMAGES_URL;
 
   return (
     <>
-      <ProfilePublicPromoterComponent
+      <PublicPhotobookComponent
         api={api}
         wishListApi={wishListApi}
         validaLogin={validaLogin}
@@ -31,10 +32,10 @@ const ProfilePublicPromoterPage = () => {
         companyId={companyId}
         appUrl={appUrl}
         appHeaderUrl={appHeaderUrl}
-        appImages={appImages}
+        appImagesUrl={appImagesUrl}
       />
     </>
   );
 };
 
-export default ProfilePublicPromoterPage;
+export default PublicPhotobookPage;

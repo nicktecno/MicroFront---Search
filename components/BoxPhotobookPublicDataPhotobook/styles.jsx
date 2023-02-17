@@ -74,27 +74,6 @@ export const BoxPhotobookConfigPhotobook = styled.div`
       margin-right: 30px;
       line-height: 25px;
 
-      ::-webkit-scrollbar {
-        width: 7px;
-      }
-
-      /* Track */
-      ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px #f4f4f5;
-        border-radius: 10px;
-      }
-
-      /* Handle */
-      ::-webkit-scrollbar-thumb {
-        background: #c7c7c7;
-        border-radius: 5px;
-      }
-
-      /* Handle on hover */
-      ::-webkit-scrollbar-thumb:hover {
-        background: #ccc;
-      }
-
       ${customMedia.lessThan("mobile")`
       justify-content:center;
       margin-left:0px;
@@ -114,27 +93,6 @@ export const BoxPhotobookConfigPhotobook = styled.div`
       width:90%;
       min-height:70px;
     `}
-
-      ::-webkit-scrollbar {
-        width: 7px;
-      }
-
-      /* Track */
-      ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px #f4f4f5;
-        border-radius: 10px;
-      }
-
-      /* Handle */
-      ::-webkit-scrollbar-thumb {
-        background: #c7c7c7;
-        border-radius: 5px;
-      }
-
-      /* Handle on hover */
-      ::-webkit-scrollbar-thumb:hover {
-        background: #ccc;
-      }
     }
   }
 `;
