@@ -17,11 +17,9 @@ import { NoResults } from "../../widgets";
 import * as S from "./styles";
 
 import BoxGeneralWhite from "../../components/BoxGeneralWhite";
-import dynamic from "next/dynamic";
 
-const ProductListMicro = dynamic(() =>
-  import("generalProductCards/productList")
-);
+import { useRouter } from "next/router";
+import ProductList from "../../components/ProductList";
 
 function SearchComponent({
   ssrData,
@@ -379,10 +377,11 @@ function SearchComponent({
                     </S.OrderSelect>
                   </S.FiltersOptions>
 
-                  <ProductListMicro
+                  <ProductList
                     mktName={mktName}
                     appImagesUrl={appImagesUrl}
                     page={"search"}
+                    history={useRouter}
                   />
 
                   <NoResults />
