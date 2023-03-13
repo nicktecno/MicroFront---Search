@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 import * as S from "./styleClearFilter";
 
@@ -5,17 +6,17 @@ import {
   connectCurrentRefinements,
   ClearRefinements,
 } from "react-instantsearch-dom";
-import { useRouter } from "next/router";
+
 import { useLang } from "../Context/LangContext";
 
 const ClearFiltersMobile = ({ items, refine }) => {
   const { routeTranslations } = useLang();
-  const history = useRouter();
+  // const history = useRouter();
 
-  function onClick() {
+  function handleFilter() {
     refine(items);
     document.body.classList.remove("filtering");
-    history.push("/search");
+    // history.push("/search");
   }
 
   return (
@@ -32,7 +33,7 @@ const ClearFiltersMobile = ({ items, refine }) => {
           />
         </div>
       ) : (
-        <div className="nenhumFiltro" onClick={onClick}>
+        <div className="nenhumFiltro" onClick={() => handleFilter()}>
           {routeTranslations !== false &&
             routeTranslations?.labels?.buttonModal03}
         </div>

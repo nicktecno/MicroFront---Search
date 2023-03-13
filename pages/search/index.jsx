@@ -26,7 +26,7 @@ const DEFAULT_PROPS = {
   indexName: process.env.NEXT_PUBLIC_REACT_APP_ALGOLIA_INDEX_SEARCH,
 };
 
-export default function SearchPage(props) {
+export default function Search(props) {
   const [searchState, setSearchState] = useState(props.searchState);
   const router = useRouter();
   const debouncedSetState = useRef();

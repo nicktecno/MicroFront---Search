@@ -1,10 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import FiltersSearchAlgolia from "../../components/FiltersSearchAlgolia";
-import ListSearchProducts from "../../components/ListSearchProducts";
-
-import { SortAlt2 } from "@styled-icons/boxicons-regular/SortAlt2";
-
 import {
   ClearRefinements,
   HitsPerPage,
@@ -12,17 +7,30 @@ import {
   InstantSearch,
   RefinementList,
 } from "react-instantsearch-dom";
+
+import FiltersSearchAlgolia from "../../components/FiltersSearchAlgolia";
+
+import { SortAlt2 } from "@styled-icons/boxicons-regular/SortAlt2";
+
 import { NoResults } from "../../widgets";
 
 import * as S from "./styles";
 
 import BoxGeneralWhite from "../../components/BoxGeneralWhite";
+import dynamic from "next/dynamic";
+
+const ProductListMicro = dynamic(() =>
+  import("generalProductCards/productList")
+);
 
 function SearchComponent({
   ssrData,
   routeTranslations,
   apiUnlogged,
   appAlgoliaIndexSearch,
+  mktName,
+  appImagesUrl,
+  companyId,
 }) {
   const headerRef = useRef(null);
   const [allCategories, setAllCategories] = useState(false);
@@ -148,6 +156,8 @@ function SearchComponent({
     setOrderState("inactive");
   }
   const { indexName, ...rest } = ssrData;
+
+  console.log(ssrData, order, rest);
 
   return (
     <>
@@ -321,6 +331,7 @@ function SearchComponent({
                     slug={
                       ssrData.routeUrl?.includes("category") ? ssrData.term : ""
                     }
+                    companyId={companyId}
                   />
                 </S.FacetsContainer>
                 <S.ProductsContainer>
@@ -368,7 +379,11 @@ function SearchComponent({
                     </S.OrderSelect>
                   </S.FiltersOptions>
 
-                  <ListSearchProducts />
+                  <ProductListMicro
+                    mktName={mktName}
+                    appImagesUrl={appImagesUrl}
+                    page={"search"}
+                  />
 
                   <NoResults />
                 </S.ProductsContainer>
