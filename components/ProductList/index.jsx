@@ -1,6 +1,6 @@
 import { connectInfiniteHits } from "react-instantsearch-dom";
 import * as S from "./styles";
-import ProductCard from "../ProductCard";
+
 import Slider from "react-slick";
 import dynamic from "next/dynamic";
 const ProductCardMicro = dynamic(() =>
@@ -360,7 +360,7 @@ const Hits = ({
             ) : (
               <S.ProductsContainer page={rest.page}>
                 {hits.map((hit, index) => (
-                  <ProductCard
+                  <ProductCardMicro
                     key={index}
                     hit={hit}
                     slider={rest.slider}
