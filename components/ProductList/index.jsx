@@ -3,8 +3,11 @@ import * as S from "./styles";
 
 import Slider from "react-slick";
 import dynamic from "next/dynamic";
-const ProductCardMicro = dynamic(() =>
-  import("generalProductCards/productCard")
+const ProductCardMicro = dynamic(
+  () => import("generalProductCards/productCard"),
+  {
+    ssr: false,
+  }
 );
 
 import { useEffect, useState } from "react";
@@ -335,8 +338,6 @@ const Hits = ({
       });
     }
   }
-
-  console.log(rest);
 
   return (
     <>

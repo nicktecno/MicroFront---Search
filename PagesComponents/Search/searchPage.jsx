@@ -18,7 +18,6 @@ import * as S from "./styles";
 
 import BoxGeneralWhite from "../../components/BoxGeneralWhite";
 
-import { useRouter } from "next/router";
 import ProductList from "../../components/ProductList";
 
 function SearchComponent({
@@ -29,6 +28,7 @@ function SearchComponent({
   mktName,
   appImagesUrl,
   companyId,
+  useRouter,
 }) {
   const headerRef = useRef(null);
   const [allCategories, setAllCategories] = useState(false);
@@ -70,7 +70,7 @@ function SearchComponent({
               ?.filter(({ name }) => {
                 return (
                   name.split(" ").join("+").toLowerCase() ===
-                  ssrData.term[0].toLowerCase()
+                  ssrData?.term[0].toLowerCase()
                 );
               });
 
@@ -154,8 +154,6 @@ function SearchComponent({
     setOrderState("inactive");
   }
   const { indexName, ...rest } = ssrData;
-
-  console.log(ssrData, order, rest);
 
   return (
     <>

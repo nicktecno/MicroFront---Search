@@ -27,7 +27,8 @@ const DEFAULT_PROPS = {
 };
 
 export default function Search(props) {
-  const [searchState, setSearchState] = useState(props.searchState);
+  const [searchState, setSearchState] = useState(props?.searchState);
+
   const router = useRouter();
   const debouncedSetState = useRef();
 
@@ -38,25 +39,29 @@ export default function Search(props) {
       });
     }
   }, [router]);
+
   return (
-    <SearchPage
-      {...DEFAULT_PROPS}
-      searchState={searchState}
-      resultsState={props.resultsState}
-      onSearchStateChange={(nextSearchState) => {
-        clearTimeout(debouncedSetState.current);
+    <>
+      <SearchPage
+        {...DEFAULT_PROPS}
+        searchState={searchState}
+        resultsState={props?.resultsState}
+        onSearchStateChange={(nextSearchState) => {
+          clearTimeout(debouncedSetState.current);
 
-        debouncedSetState.current = setTimeout(() => {
-          const href = searchStateToURL(nextSearchState);
+          debouncedSetState.current = setTimeout(() => {
+            const href = searchStateToURL(nextSearchState);
 
-          router.push(href, href, { shallow: true });
-        }, updateAfter);
+            router.push(href, href, { shallow: true });
+          }, updateAfter);
 
-        setSearchState(nextSearchState);
-      }}
-      createURL={createURL}
-      routeUrl={props.resolvedUrl}
-    />
+          setSearchState(nextSearchState);
+        }}
+        createURL={createURL}
+        routeUrl={props?.resolvedUrl}
+        useRouter={useRouter}
+      />
+    </>
   );
 }
 
