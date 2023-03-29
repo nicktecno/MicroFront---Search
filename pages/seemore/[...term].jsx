@@ -42,7 +42,7 @@ export default function SeeMorePage(props) {
     <SearchPage
       {...DEFAULT_PROPS}
       searchState={searchState}
-      resultsState={props.resultsState}
+      resultsState={props?.resultsState}
       onSearchStateChange={(nextSearchState) => {
         clearTimeout(debouncedSetState.current);
 
@@ -55,8 +55,9 @@ export default function SeeMorePage(props) {
         setSearchState(nextSearchState);
       }}
       createURL={createURL}
-      term={props.term}
-      routeUrl={props.resolvedUrl}
+      term={props?.term}
+      routeUrl={props?.resolvedUrl}
+      useRouter={useRouter}
     />
   );
 }
