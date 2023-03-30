@@ -16,9 +16,13 @@ import { NoResults } from "../../widgets";
 
 import * as S from "./styles";
 
+import qs from "qs";
+
 import BoxGeneralWhite from "../../components/BoxGeneralWhite";
 
 import ProductList from "../../components/ProductList";
+import algoliasearch from "algoliasearch";
+import { useRouter } from "next/router";
 
 function SearchComponent({
   ssrData,
@@ -29,6 +33,42 @@ function SearchComponent({
   appImagesUrl,
   companyId,
 }) {
+  const createURL = (state) => `?${qs.stringify(state)}`;
+
+  const searchStateToUrl = (searchState) =>
+    searchState ? createURL(searchState) : "";
+
+  const urlToSearchState = ({ search }) => qs.parse(search);
+
+  const DEBOUNCE_TIME = 400;
+
+  const searchClient = algoliasearch(
+    process.env.NEXT_PUBLIC_REACT_APP_ALGOLIA_APP_ID,
+    process.env.NEXT_PUBLIC_REACT_APP_ALGOLIA_SEARCH_API_KEY
+  );
+
+  const history = useRouter();
+
+  const [searchState, setSearchState] = useState(
+    urlToSearchState(history.pathname)
+  );
+
+  const debouncedSetStateRef = useRef(null);
+
+  function onSearchStateChange(updatedSearchState) {
+    clearTimeout(debouncedSetStateRef.current);
+
+    debouncedSetStateRef.current = setTimeout(() => {
+      history.push(searchStateToUrl(updatedSearchState));
+    }, DEBOUNCE_TIME);
+
+    setSearchState(updatedSearchState);
+  }
+
+  useEffect(() => {
+    setSearchState(urlToSearchState(history.pathname));
+  }, []);
+
   const headerRef = useRef(null);
   const [allCategories, setAllCategories] = useState(false);
   const [categoryInfo, setCategoryInfo] = useState(false);
@@ -45,13 +85,13 @@ function SearchComponent({
         );
 
         if (response.data.filter((filtro) => filtro.name !== "Root")) {
-          if (ssrData.searchState.hierarchicalMenu !== undefined) {
+          if (searchState.hierarchicalMenu !== undefined) {
             const categoryInfo = response.data
               .filter((filtro) => filtro.name !== "Root")
               ?.filter(({ name }) => {
                 return (
                   name.split(" ").join("+").toLowerCase() ===
-                  ssrData.searchState.hierarchicalMenu[
+                  searchState.hierarchicalMenu[
                     "son_categories.lvl0"
                   ].toLowerCase()
                 );
@@ -88,7 +128,7 @@ function SearchComponent({
             ?.filter(({ name }) => {
               return (
                 name.split(" ").join("+").toLowerCase() ===
-                ssrData.searchState.hierarchicalMenu[
+                searchState.hierarchicalMenu[
                   "son_categories.lvl0"
                 ].toLowerCase()
               );
@@ -109,7 +149,7 @@ function SearchComponent({
 
   useEffect(() => {
     getMenu();
-  }, [ssrData.searchState?.hierarchicalMenu]);
+  }, [searchState?.hierarchicalMenu]);
 
   // resetar busca sempre que entrar nela
 
@@ -152,14 +192,17 @@ function SearchComponent({
     document.body.style.overflow = "auto";
     setOrderState("inactive");
   }
-  const { indexName, ...rest } = ssrData;
 
   return (
     <>
-      {" "}
       <S.GeneralContainer>
-        {" "}
-        <InstantSearch indexName={appAlgoliaIndexSearch + order} {...rest}>
+        <InstantSearch
+          searchClient={searchClient}
+          indexName={appAlgoliaIndexSearch + order}
+          searchState={searchState}
+          onSearchStateChange={onSearchStateChange}
+          createURL={createURL}
+        >
           <S.OrderingModal className={orderState}>
             <S.Transparent
               onClick={() => {
@@ -213,8 +256,8 @@ function SearchComponent({
             {routeTranslations !== false && routeTranslations?.labels?.button01}
           </S.ButtonOrdenar>
 
-          {ssrData.routeUrl?.includes("search") ||
-          ssrData.routeUrl?.includes("seemore") ? (
+          {history.pathname?.includes("search") ||
+          history.pathname?.includes("seemore") ? (
             <S.GeneralSearch>
               <span>
                 <h4>
@@ -237,7 +280,7 @@ function SearchComponent({
                 </h4>
               </span>
             </S.GeneralSearch>
-          ) : ssrData.routeUrl?.includes("category") ? (
+          ) : history.pathname?.includes("category") ? (
             <S.CategorySearch
               style={{
                 background: categoryInfo.banner
@@ -260,10 +303,8 @@ function SearchComponent({
                   : ""}
                 {ssrData.term !== undefined && (
                   <span>
-                    {ssrData.searchState.hierarchicalMenu !== undefined
-                      ? ssrData.searchState.hierarchicalMenu[
-                          "son_categories.lvl0"
-                        ]
+                    {searchState.hierarchicalMenu !== undefined
+                      ? searchState.hierarchicalMenu["son_categories.lvl0"]
                       : ssrData.term === undefined
                       ? ""
                       : ssrData.term.length > 1
@@ -291,7 +332,7 @@ function SearchComponent({
             </S.GeneralSearch>
           )}
 
-          {ssrData.routeUrl?.includes("seemore") &&
+          {history.pathname?.includes("seemore") &&
             ssrData.term !== undefined && (
               <S.HideContainer>
                 <RefinementList
@@ -301,8 +342,8 @@ function SearchComponent({
               </S.HideContainer>
             )}
 
-          {ssrData.routeUrl?.includes("category") ||
-          ssrData.routeUrl?.includes("seemore") ? (
+          {history.pathname?.includes("category") ||
+          history.pathname?.includes("seemore") ? (
             <Configure filters="son_has_offers:true" />
           ) : (
             <Configure query={ssrData.term} filters="son_has_offers:true" />
@@ -324,7 +365,7 @@ function SearchComponent({
                     openFilters={openFilters}
                     closeFilters={closeFilters}
                     slug={
-                      ssrData.routeUrl?.includes("category") ? ssrData.term : ""
+                      history.pathname?.includes("category") ? ssrData.term : ""
                     }
                     companyId={companyId}
                   />
@@ -378,7 +419,6 @@ function SearchComponent({
                     mktName={mktName}
                     appImagesUrl={appImagesUrl}
                     page={"search"}
-                    history={ssrData.useRouter}
                   />
 
                   <NoResults />
