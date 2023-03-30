@@ -28,7 +28,6 @@ function SearchComponent({
   mktName,
   appImagesUrl,
   companyId,
-  useRouter,
 }) {
   const headerRef = useRef(null);
   const [allCategories, setAllCategories] = useState(false);
@@ -379,7 +378,7 @@ function SearchComponent({
                     mktName={mktName}
                     appImagesUrl={appImagesUrl}
                     page={"search"}
-                    history={useRouter}
+                    history={ssrData.useRouter}
                   />
 
                   <NoResults />

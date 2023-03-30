@@ -66,7 +66,7 @@ export async function getServerSideProps({ params, resolvedUrl }) {
   const { term } = params;
 
   const searchState = pathToSearchState(resolvedUrl);
-  const resultsState = await findResultsState(SearchPage, {
+  const resultsState = await findResultsState(CategoryPage, {
     ...DEFAULT_PROPS,
     searchState,
   });

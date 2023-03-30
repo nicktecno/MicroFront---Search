@@ -23,7 +23,6 @@ const SearchPage = (props) => {
         mktName={mktName}
         appImagesUrl={appImagesUrl}
         companyId={companyId}
-        useRouter={props.useRouter}
       />
     </>
   );
