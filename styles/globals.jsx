@@ -1050,6 +1050,398 @@ margin-top:0px;
 //   .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked{
 //     color: #fff !important;
 //   }
+
+
+  /* Global Search page styles */
+
+  [class^="ais-"] {
+  box-sizing: border-box;
+  font-size: 0.9rem;
+}
+
+a[class^="ais-"] {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+/*We need to target the root element because Angular InstantSearch
+    creates web components which are not targetable with the "*" selector.*/
+[class^='ais-'][class$='--disabled'],
+  /*
+    We need to target all elements for widgets containing
+    multiple sub elements (e.g. RangeSlider)
+  */
+  [class^='ais-'][class$='--disabled'] * {
+  cursor: not-allowed;
+}
+
+.ais-HitsPerPage-select {
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  min-width: 220px !important;
+  background: url("/images/icon-errow-down.png") 95% center no-repeat !important;
+}
+
+.ais-HierarchicalMenu-list {
+  margin-top: 5px;
+  padding: 5px 0px 5px 5px;
+}
+
+.ais-ClearRefinements {
+  .ais-ClearRefinements-button {
+    background-color: var(--bt-positive-color);
+    color: var(--bt-positive-text-color) !important;
+    font-weight: 500;
+    cursor:pointer;
+    padding: 5px 20px;
+    border: 0px;
+    width: 100%;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    @media (min-width: 768px) and (max-width: 900px) {
+    }
+
+    @media (max-width: 767px) {
+      padding: 10px 20px;
+    }
+
+    svg {
+      margin-right: 5px;
+    }
+  }
+
+  .ais-ClearRefinements-button:hover {
+    background-color: var(--bt-positive-color-hover);
+    color: var(--bt-positive-text-color-hover);
+  }
+
+  .ais-ClearRefinements-button--disabled {
+    display: none !important;
+  }
+}
+
+/* Menus */
+.ais-RefinementList-item,
+.ais-Menu-item,
+.ais-HierarchicalMenu-item,
+.ais-RatingMenu-item {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.ais-RefinementList-item,
+  /*
+   The refinement list item in InstantSearch.js contains a wrapping "div" because of
+   the template behavior. We therefore need to apply the styles to all the elements
+   in a refinement list.
+  */
+  .ais-RefinementList-item *,
+  .ais-RatingMenu-item {
+  cursor: pointer;
+}
+
+.ais-HierarchicalMenu-link,
+.ais-RatingMenu-item,
+.ais-RefinementList-item {
+  padding-bottom: 1rem;
+}
+
+.ais-Breadcrumb-item--selected,
+.ais-HierarchicalMenu-item--selected,
+.ais-Menu-item--selected {
+  font-weight: bold;
+
+  span {
+    color: black !important;
+
+    &.ais-HierarchicalMenu-count {
+      color: var(--title-color) !important;
+    }
+  }
+}
+
+/* Menus */
+
+.ais-RefinementList-item--selected .ais-RefinementList-checkbox {
+  background-color: var(--default-color);
+}
+
+.ais-RefinementList-item--selected .ais-RefinementList-checkbox::after {
+  background-color: #fff;
+  border-radius: 4px;
+  content: "";
+  height: 4px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateX(-2px) translateY(-2px);
+  width: 4px;
+}
+
+.ais-HierarchicalMenu-list {
+  font-weight: normal;
+}
+
+
+/* Selectors */
+
+.ais-SortBy-select,
+.ais-HitsPerPage-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  border: none;
+  color: var(--font-color);
+  font-family: inherit;
+}
+
+/* Hide all mobile-specific design on desktop */
+
+@media (min-width: 900px) {
+  [data-layout="mobile"] {
+    display: none;
+  }
+}
+
+@media (max-width: 899px) {
+  /* Filters overlay */
+
+  .container-filters .container-header,
+  .container-filters .container-body {
+    padding: 2rem 2rem 0 2rem;
+  }
+
+  .filtering .header {
+    /*
+        Closing panel on outter click didn't work on mobile safari.
+        This is one of the workarounds from the following:
+        https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event#Safari_Mobile
+      */
+    cursor: pointer;
+  }
+
+  .filtering .header-logo {
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    top: 1.5rem;
+    transform: translateX(-50%);
+  }
+
+
+  /* Hide all desktop-specific design on mobile */
+
+
+}
+
+.ais-RangeSlider .slider-rail {
+  background-color: rgba(65, 66, 71, 0.08);
+  border-radius: 3px;
+  cursor: pointer;
+  height: 3px;
+  position: absolute;
+  width: 100%;
+}
+
+.ais-RangeSlider .slider-track {
+  background-color: var(--default-color);
+  border-radius: 3px;
+  cursor: pointer;
+  height: 3px;
+  position: absolute;
+}
+
+.ais-RangeSlider .slider-tick {
+  cursor: grab;
+  display: flex;
+  font-size: 0.75rem;
+  font-weight: bold;
+  position: absolute;
+  text-align: center;
+  top: -28px;
+  transform: translateX(-50%);
+  user-select: none;
+}
+
+.ais-RangeSlider .slider-handle {
+  background-image: linear-gradient(to top, #f5f5fa, #fff);
+  border-radius: 50%;
+  box-shadow: 0 4px 11px 0 rgba(37, 44, 97, 0.15),
+    0 2px 3px 0 rgba(93, 100, 148, 0.2);
+  cursor: grab;
+  height: 16px;
+  outline: none;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  z-index: 1;
+}
+
+@media (max-width: 899px) {
+  .ais-RangeSlider .slider-handle {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+}
+
+div.hits-empty-state {
+  align-self: center;
+}
+
+    footer.container-filters-footer {
+        display: none;
+    }
+
+    body.filtering {
+      overflow: hidden !important;
+        div.stopScrollMob {
+            z-index: 9;
+        }
+
+        div.container-filters {
+            ${customMedia.lessThan("tablet")`
+                position: absolute;
+                transform: translateY(4rem);
+                box-shadow: 0 -10px 10px rgb(0 0 0 / 12%);
+            `}
+            }
+
+
+        footer.container-filters-footer {
+            ${customMedia.lessThan("tablet")`
+                    background-color: #fff;
+                    border-top: 1px solid #ebecf3;
+                    bottom: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 0 auto;
+                    left: 0;
+                    padding: 20px 15px 0px;
+                    position: fixed;
+                    width: 100%;
+                    height: 80px;
+                    z-index: 8;
+                    right: 0;
+                    top: initial;
+                    box-shadow: 0px -10px 10px #0000001f;
+                    border-radius: 0px;
+                    z-index: 10; /* avoid collision with slider UI */
+
+                .ais-ClearRefinements-button,
+                    .button-primary {
+                        border-radius: 0px !important;
+                        width: 100%;
+                        color: var(--font-color);
+                        border: 0px !important;
+                        font-size: 12px;
+                    }
+            `}
+                               .container-filters-footer-button-wrapper {
+                        width: calc(50% - 0.5rem);
+
+                        .bt-close {
+                            position: absolute;
+                            bottom: 70px;
+                            border-radius: 60px;
+                            right: 5px;
+                            width: 30px;
+                            height: 30px;
+
+                            background-color: var(--default-color);
+                            color: var(--font-color);
+                            font-size: 18px;
+                        }
+                    }
+
+                     .ais-ClearRefinements-button,
+                     .button {
+                        border: 0px !important;
+                        cursor: pointer;
+                        display: flex;
+                        font: inherit;
+                        font-size: 14px;
+                        font-weight: bold;
+                        justify-content: center;
+                        padding: 12px;
+                        text-align: center;
+                        width: 100%;
+                        margin: 0px;
+                    }
+
+                    .button-primary {
+                        background-color: var(--bt-positive-color);
+                        color: var(--bt-positive-text-color);
+                    }
+                    .button-primary:hover {
+                        background-color: var(--bt-positive-color-hover);
+                        color: var(--bt-positive-text-color-hover);
+                    }
+                    /* Filters button that triggers the overlay */
+
+                    .order-button {
+                        align-items: center;
+                        background-color: var(--default-color);
+                        border: none;
+                        border-radius: 0px;
+                        bottom: 10px;
+                        box-shadow: 0 4px 22px 0 #a09d918e;
+                        color: var(--title-color);
+                        cursor: pointer;
+                        display: flex;
+                        font: inherit;
+                        font-size: 0.875rem;
+                        font-weight: bold;
+                        justify-content: center;
+                        left: 30%;
+                        min-height: 40px;
+                        min-width: 112px;
+                        position: fixed;
+                        z-index: 8;
+                        transform: translateX(-50%);
+                        transition: 0.3s;
+
+                        @media screen and (max-width: 768px) {
+                        bottom: 95px;
+                        }
+                    }
+
+                    .order-button:hover {
+                        background: var(--default-color-hover);
+                    }
+
+                    .order-button svg {
+                        height: 14px;
+
+                        margin-right: 8px;
+                        width: 16px;
+                    }
+
+                    .container-options {
+                        display: none;
+                    }
+
+                    .ais-SearchBox .ais-SearchBox-input,
+                    .ais-RefinementList .ais-SearchBox-input {
+                        font-size: 1rem;
+                    }
+
+                    .ais-RefinementList .ais-SearchBox-input {
+                        min-height: 48px;
+                    }
+        }
+    }
+
     
 `;
 

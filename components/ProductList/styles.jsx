@@ -79,6 +79,7 @@ export const BoxPrevArrow = styled.div`
 
 export const ContainerSeeMoreAlgolia = styled.div`
   display: flex;
+  width: 100%;
   justify-content: center;
   align-items: center;
   margin-top: 20px;

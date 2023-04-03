@@ -24,6 +24,9 @@ import ProductList from "../../components/ProductList";
 import algoliasearch from "algoliasearch";
 import { useRouter } from "next/router";
 
+import SelectFilterPaginationDeskSearch from "../../components/SelectFilterPaginationDeskSearch";
+import SelectFilterPaginationMobileSearch from "../../components/SelectFilterPaginationMobileSearch";
+
 function SearchComponent({
   ssrData,
   routeTranslations,
@@ -151,7 +154,7 @@ function SearchComponent({
     getMenu();
   }, [searchState?.hierarchicalMenu]);
 
-  // resetar busca sempre que entrar nela
+  console.log(order);
 
   function openFilters() {
     document.body.classList.add("filtering");
@@ -183,11 +186,12 @@ function SearchComponent({
   }
 
   function handleOrder(e) {
-    setOrder(e.target.value === "_asc" ? "" : "_asc");
+    console.log(e);
+    setOrder(e.target.value);
   }
 
   function handleOrderMobile(e) {
-    setOrder(e === "_asc" ? "" : "_asc");
+    setOrder(e.target.value);
 
     document.body.style.overflow = "auto";
     setOrderState("inactive");
@@ -212,24 +216,15 @@ function SearchComponent({
             />
             <S.OrderingCenter>
               <div className="header">
-                {routeTranslations !== false &&
-                  routeTranslations?.labels?.labelModal01}
+                {routeTranslations !== false
+                  ? routeTranslations?.labels?.labelModal01
+                  : ""}
               </div>
               <div className="title">
-                <div
-                  className="decreasing positiveButton"
-                  onClick={() => handleOrderMobile("_dec")}
-                >
-                  {routeTranslations !== false &&
-                    routeTranslations?.labels?.labelModal02}
-                </div>
-                <div
-                  className="increasing positiveButton"
-                  onClick={() => handleOrderMobile("_asc")}
-                >
-                  {routeTranslations !== false &&
-                    routeTranslations?.labels?.labelModal03}
-                </div>
+                <SelectFilterPaginationMobileSearch
+                  handleOrderMobile={handleOrderMobile}
+                  routeTranslations={routeTranslations}
+                />
               </div>
               <div className="buttonsContainer ">
                 <div
@@ -239,8 +234,9 @@ function SearchComponent({
                   }}
                   className="buttonClass negativeButton"
                 >
-                  {routeTranslations !== false &&
-                    routeTranslations?.labels?.buttonModal01}
+                  {routeTranslations !== false
+                    ? routeTranslations?.labels?.buttonModal01
+                    : ""}
                 </div>
               </div>
             </S.OrderingCenter>
@@ -253,7 +249,9 @@ function SearchComponent({
             }}
           >
             <SortAlt2 />
-            {routeTranslations !== false && routeTranslations?.labels?.button01}
+            {routeTranslations !== false
+              ? routeTranslations?.labels?.button01
+              : ""}
           </S.ButtonOrdenar>
 
           {history.pathname?.includes("search") ||
@@ -263,17 +261,20 @@ function SearchComponent({
                 <h4>
                   {ssrData.term !== undefined ? (
                     <>
-                      {routeTranslations !== false &&
-                        routeTranslations?.labels?.label01}
+                      {routeTranslations !== false
+                        ? routeTranslations?.labels?.label01
+                        : ""}
                       <span>{ssrData.term[0]}</span>
                     </>
                   ) : (
                     <>
-                      {routeTranslations !== false &&
-                        routeTranslations?.labels?.label01}
+                      {routeTranslations !== false
+                        ? routeTranslations?.labels?.label01
+                        : ""}
                       <span>
-                        {routeTranslations !== false &&
-                          routeTranslations?.labels?.label02}
+                        {routeTranslations !== false
+                          ? routeTranslations?.labels?.label02
+                          : ""}
                       </span>
                     </>
                   )}
@@ -378,22 +379,25 @@ function SearchComponent({
                         items={[
                           {
                             label: `${
-                              routeTranslations !== false &&
-                              routeTranslations?.labels?.label03
+                              routeTranslations !== false
+                                ? routeTranslations?.labels?.label03
+                                : ""
                             }`,
                             value: 8,
                           },
                           {
                             label: `${
-                              routeTranslations !== false &&
-                              routeTranslations?.labels?.label04
+                              routeTranslations !== false
+                                ? routeTranslations?.labels?.label04
+                                : ""
                             }`,
                             value: 16,
                           },
                           {
                             label: `${
-                              routeTranslations !== false &&
-                              routeTranslations?.labels?.label05
+                              routeTranslations !== false
+                                ? routeTranslations?.labels?.label05
+                                : ""
                             }`,
                             value: 32,
                           },
@@ -402,16 +406,10 @@ function SearchComponent({
                       />
                     </S.ResultsPerPage>
                     <S.OrderSelect>
-                      <select onChange={handleOrder}>
-                        <option value="">
-                          {routeTranslations !== false &&
-                            routeTranslations?.labels?.labelModal02}
-                        </option>
-                        <option value="_asc">
-                          {routeTranslations !== false &&
-                            routeTranslations?.labels?.labelModal03}
-                        </option>
-                      </select>
+                      <SelectFilterPaginationDeskSearch
+                        handleOrder={handleOrder}
+                        routeTranslations={routeTranslations}
+                      />
                     </S.OrderSelect>
                   </S.FiltersOptions>
 
