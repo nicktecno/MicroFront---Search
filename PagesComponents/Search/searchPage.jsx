@@ -38,10 +38,17 @@ function SearchComponent({
 }) {
   const createURL = (state) => `?${qs.stringify(state)}`;
 
-  const searchStateToUrl = (searchState) =>
-    searchState ? createURL(searchState) : "";
+  const searchStateToUrl = (location, searchState) =>
+    searchState
+      ? `${location.pathname.replace("[...term]", "")}${
+          location.query.term !== undefined ? location.query.term[0] : ""
+        }${createURL(searchState)}`
+      : "";
 
-  const urlToSearchState = ({ search }) => qs.parse(search);
+  const urlToSearchState = (location) =>
+    location.asPath.includes("?")
+      ? qs.parse(location.asPath.substring(location.asPath.indexOf("?") + 1))
+      : {};
 
   const DEBOUNCE_TIME = 400;
 
@@ -52,9 +59,7 @@ function SearchComponent({
 
   const history = useRouter();
 
-  const [searchState, setSearchState] = useState(
-    urlToSearchState(history.pathname)
-  );
+  const [searchState, setSearchState] = useState(urlToSearchState(history));
 
   const debouncedSetStateRef = useRef(null);
 
@@ -62,15 +67,24 @@ function SearchComponent({
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
-      history.push(searchStateToUrl(updatedSearchState));
+      console.log(
+        history,
+        searchStateToUrl(history, updatedSearchState),
+        searchStateToUrl(history, updatedSearchState),
+        {
+          shallow: true,
+        }
+      );
     }, DEBOUNCE_TIME);
 
     setSearchState(updatedSearchState);
   }
 
   useEffect(() => {
-    setSearchState(urlToSearchState(history.pathname));
-  }, []);
+    setSearchState(urlToSearchState(history));
+  }, [history.pathname]);
+
+  console.log(history);
 
   const headerRef = useRef(null);
   const [allCategories, setAllCategories] = useState(false);
