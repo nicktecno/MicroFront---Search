@@ -40,9 +40,15 @@ function SearchComponent({
 
   const searchStateToUrl = (location, searchState) =>
     searchState
-      ? `${location.pathname.replace("[...term]", "")}${
-          location.query.term !== undefined ? location.query.term[0] : ""
-        }${createURL(searchState)}`
+      ? location.query.term !== undefined
+        ? location.query.term.length > 1
+          ? `${location.pathname.replace("[...term]", "")}${
+              location.query.term[0]
+            }/${location.query.term[1]}${createURL(searchState)}`
+          : `${location.pathname.replace("[...term]", "")}${
+              location.query.term[0]
+            }${createURL(searchState)}`
+        : `${location.pathname}${createURL(searchState)}`
       : "";
 
   const urlToSearchState = (location) =>
@@ -67,10 +73,10 @@ function SearchComponent({
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
-      console.log(
+      history.replace(
         history,
         searchStateToUrl(history, updatedSearchState),
-        searchStateToUrl(history, updatedSearchState),
+
         {
           shallow: true,
         }
@@ -83,8 +89,6 @@ function SearchComponent({
   useEffect(() => {
     setSearchState(urlToSearchState(history));
   }, [history.pathname]);
-
-  console.log(history);
 
   const headerRef = useRef(null);
   const [allCategories, setAllCategories] = useState(false);
@@ -167,8 +171,6 @@ function SearchComponent({
   useEffect(() => {
     getMenu();
   }, [searchState?.hierarchicalMenu]);
-
-  console.log(order);
 
   function openFilters() {
     document.body.classList.add("filtering");
@@ -268,8 +270,39 @@ function SearchComponent({
               : ""}
           </S.ButtonOrdenar>
 
-          {history.pathname?.includes("search") ||
-          history.pathname?.includes("seemore") ? (
+          {history.pathname?.includes("seemore") ? (
+            <S.GeneralSearch>
+              <span>
+                <h4>
+                  {ssrData.term !== undefined ? (
+                    <>
+                      {routeTranslations !== false
+                        ? routeTranslations?.labels?.label01
+                        : ""}
+                      <span>
+                        {searchState.refinementList !== undefined
+                          ? searchState.refinementList[ssrData.term[1]] === ""
+                            ? ""
+                            : ssrData.term[0]
+                          : ssrData.term[0]}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {routeTranslations !== false
+                        ? routeTranslations?.labels?.label01
+                        : ""}
+                      <span>
+                        {routeTranslations !== false
+                          ? routeTranslations?.labels?.label02
+                          : ""}
+                      </span>
+                    </>
+                  )}
+                </h4>
+              </span>
+            </S.GeneralSearch>
+          ) : history.pathname?.includes("search") ? (
             <S.GeneralSearch>
               <span>
                 <h4>
