@@ -28,7 +28,6 @@ import SelectFilterPaginationDeskSearch from "../../components/SelectFilterPagin
 import SelectFilterPaginationMobileSearch from "../../components/SelectFilterPaginationMobileSearch";
 
 function SearchComponent({
-  ssrData,
   routeTranslations,
   apiUnlogged,
   appAlgoliaIndexSearch,
@@ -121,8 +120,8 @@ function SearchComponent({
             setAllCategories(response.data);
 
             setCategoryInfo({
-              color: categoryInfo[0].color,
-              banner: categoryInfo[0].banner,
+              color: categoryInfo[0]?.color,
+              banner: categoryInfo[0]?.banner,
             });
           } else {
             const categoryInfo = response.data
@@ -130,15 +129,15 @@ function SearchComponent({
               ?.filter(({ name }) => {
                 return (
                   name.split(" ").join("+").toLowerCase() ===
-                  ssrData?.term[0].toLowerCase()
+                  ssrData.query.term[0].toLowerCase()
                 );
               });
 
             setAllCategories(response.data);
 
             setCategoryInfo({
-              color: categoryInfo[0].color,
-              banner: categoryInfo[0].banner,
+              color: categoryInfo[0]?.color,
+              banner: categoryInfo[0]?.banner,
             });
           }
         }
@@ -169,7 +168,9 @@ function SearchComponent({
   }
 
   useEffect(() => {
-    getMenu();
+    if (history.pathname?.includes("/category")) {
+      getMenu();
+    }
   }, [searchState?.hierarchicalMenu]);
 
   function openFilters() {
@@ -270,21 +271,23 @@ function SearchComponent({
               : ""}
           </S.ButtonOrdenar>
 
-          {history.pathname?.includes("seemore") ? (
+          {history.pathname?.includes("/seemore") ? (
             <S.GeneralSearch>
               <span>
                 <h4>
-                  {ssrData.term !== undefined ? (
+                  {history.query.term !== undefined ? (
                     <>
                       {routeTranslations !== false
                         ? routeTranslations?.labels?.label01
                         : ""}
                       <span>
                         {searchState.refinementList !== undefined
-                          ? searchState.refinementList[ssrData.term[1]] === ""
+                          ? searchState.refinementList[
+                              history.query.term[1]
+                            ] === ""
                             ? ""
-                            : ssrData.term[0]
-                          : ssrData.term[0]}
+                            : history.query.term[0]
+                          : history.query.term[0]}
                       </span>
                     </>
                   ) : (
@@ -302,16 +305,16 @@ function SearchComponent({
                 </h4>
               </span>
             </S.GeneralSearch>
-          ) : history.pathname?.includes("search") ? (
+          ) : history.pathname?.includes("/search") ? (
             <S.GeneralSearch>
               <span>
                 <h4>
-                  {ssrData.term !== undefined ? (
+                  {history.query.term !== undefined ? (
                     <>
                       {routeTranslations !== false
                         ? routeTranslations?.labels?.label01
                         : ""}
-                      <span>{ssrData.term[0]}</span>
+                      <span>{history.query.term[0]}</span>
                     </>
                   ) : (
                     <>
@@ -328,7 +331,7 @@ function SearchComponent({
                 </h4>
               </span>
             </S.GeneralSearch>
-          ) : history.pathname?.includes("category") ? (
+          ) : history.pathname?.includes("/category") ? (
             <S.CategorySearch
               style={{
                 background: categoryInfo.banner
@@ -346,18 +349,18 @@ function SearchComponent({
                       : "#000",
                 }}
               >
-                {ssrData.term !== undefined && routeTranslations !== false
+                {history.query.term !== undefined && routeTranslations !== false
                   ? routeTranslations?.labels?.label01
                   : ""}
-                {ssrData.term !== undefined && (
+                {history.query.term !== undefined && (
                   <span>
                     {searchState.hierarchicalMenu !== undefined
                       ? searchState.hierarchicalMenu["son_categories.lvl0"]
-                      : ssrData.term === undefined
+                      : history.query.term === undefined
                       ? ""
-                      : ssrData.term.length > 1
-                      ? ssrData.term[1].replace(/\+/g, " ")
-                      : ssrData.term[0]?.replace(/\+/g, " ")}
+                      : history.query.term.length > 1
+                      ? history.query.term[1].replace(/\+/g, " ")
+                      : history.query.term[0]?.replace(/\+/g, " ")}
                   </span>
                 )}
               </h4>
@@ -366,11 +369,11 @@ function SearchComponent({
             <S.GeneralSearch>
               <span>
                 <h4>
-                  {ssrData.term !== undefined ? (
+                  {history.query.term !== undefined ? (
                     <>
                       {routeTranslations !== false &&
                         routeTranslations?.labels?.label01}
-                      <span>{ssrData.term[0]}</span>
+                      <span>{history.query.term[0]}</span>
                     </>
                   ) : (
                     <></>
@@ -380,21 +383,24 @@ function SearchComponent({
             </S.GeneralSearch>
           )}
 
-          {history.pathname?.includes("seemore") &&
-            ssrData.term !== undefined && (
+          {history.pathname?.includes("/seemore") &&
+            history.query.term !== undefined && (
               <S.HideContainer>
                 <RefinementList
-                  attribute={ssrData.term[1]}
+                  attribute={history.query.term[1]}
                   defaultRefinement={["Sim"]}
                 />
               </S.HideContainer>
             )}
 
-          {history.pathname?.includes("category") ||
-          history.pathname?.includes("seemore") ? (
+          {history.pathname?.includes("/category") ||
+          history.pathname?.includes("/seemore") ? (
             <Configure filters="son_has_offers:true" />
           ) : (
-            <Configure query={ssrData.term} filters="son_has_offers:true" />
+            <Configure
+              query={history.query.term}
+              filters="son_has_offers:true"
+            />
           )}
 
           <div className="conteudo">
@@ -413,7 +419,9 @@ function SearchComponent({
                     openFilters={openFilters}
                     closeFilters={closeFilters}
                     slug={
-                      history.pathname?.includes("category") ? ssrData.term : ""
+                      history.pathname?.includes("/category")
+                        ? history.query.term
+                        : ""
                     }
                     companyId={companyId}
                   />

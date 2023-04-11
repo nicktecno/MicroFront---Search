@@ -5,7 +5,7 @@ import apiUnlogged from "../../services/apiUnlogged";
 
 import SearchComponent from "./searchPage";
 
-const SearchPage = (props) => {
+const SearchPage = () => {
   const { routeTranslations } = useLang();
   const appAlgoliaIndexSearch =
     process.env.NEXT_PUBLIC_REACT_APP_ALGOLIA_INDEX_SEARCH;
@@ -19,7 +19,6 @@ const SearchPage = (props) => {
         apiUnlogged={apiUnlogged}
         routeTranslations={routeTranslations}
         appAlgoliaIndexSearch={appAlgoliaIndexSearch}
-        ssrData={props}
         mktName={mktName}
         appImagesUrl={appImagesUrl}
         companyId={companyId}
