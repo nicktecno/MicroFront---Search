@@ -129,7 +129,7 @@ function SearchComponent({
               ?.filter(({ name }) => {
                 return (
                   name.split(" ").join("+").toLowerCase() ===
-                  ssrData.query.term[0].toLowerCase()
+                  history.query.term[0].toLowerCase()
                 );
               });
 
