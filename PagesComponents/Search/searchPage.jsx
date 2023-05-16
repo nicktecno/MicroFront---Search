@@ -90,80 +90,49 @@ function SearchComponent({
   }, [history.pathname]);
 
   const headerRef = useRef(null);
-  const [allCategories, setAllCategories] = useState(false);
+
   const [categoryInfo, setCategoryInfo] = useState(false);
   const [order, setOrder] = useState("_asc");
   const [orderState, setOrderState] = useState("inactive");
-  const [loading, setLoading] = useState(false);
 
   async function getMenu() {
     try {
-      if (allCategories === false) {
-        setLoading(true);
-        const { data: response } = await apiUnlogged.get(
-          "/descendant-categories"
-        );
+      if (props.searchState.hierarchicalMenu !== undefined) {
+        const categoryInfo = props.content
+          .filter((filtro) => filtro.name !== "Root")
+          ?.filter(({ name }) => {
+            return (
+              name.split(" ").join("+").toLowerCase() ===
+              props.searchState.hierarchicalMenu["son_categories.lvl0"]
+                .split(" ")
+                .join("+")
+                .toLowerCase()
+            );
+          });
 
-        if (response.data.filter((filtro) => filtro.name !== "Root")) {
-          if (searchState.hierarchicalMenu !== undefined) {
-            const categoryInfo = response.data
-              .filter((filtro) => filtro.name !== "Root")
-              ?.filter(({ name }) => {
-                return (
-                  name.split(" ").join("+").toLowerCase() ===
-                  searchState.hierarchicalMenu[
-                    "son_categories.lvl0"
-                  ].toLowerCase()
-                );
-              });
-
-            setAllCategories(response.data);
-
-            setCategoryInfo({
-              color: categoryInfo[0]?.color,
-              banner: categoryInfo[0]?.banner,
-            });
-          } else {
-            const categoryInfo = response.data
-              .filter((filtro) => filtro.name !== "Root")
-              ?.filter(({ name }) => {
-                return (
-                  name.split(" ").join("+").toLowerCase() ===
-                  history.query.term[0].toLowerCase()
-                );
-              });
-
-            setAllCategories(response.data);
-
-            setCategoryInfo({
-              color: categoryInfo[0]?.color,
-              banner: categoryInfo[0]?.banner,
-            });
-          }
-        }
-      } else {
-        if (allCategories !== false && allCategories.length > 0) {
-          const categoryInfo = allCategories
-            .filter((filtro) => filtro.name !== "Root")
-            ?.filter(({ name }) => {
-              return (
-                name.split(" ").join("+").toLowerCase() ===
-                searchState.hierarchicalMenu[
-                  "son_categories.lvl0"
-                ].toLowerCase()
-              );
-            });
-
+        if (categoryInfo.length > 0) {
           setCategoryInfo({
-            color: categoryInfo[0].color,
+            color: categoryInfo[0].color !== undefined && categoryInfo[0].color,
             banner: categoryInfo[0].banner,
           });
         }
+      } else {
+        const categoryInfo = props.content
+          .filter((filtro) => filtro.name !== "Root")
+          ?.filter(({ name }) => {
+            return (
+              name.split(" ").join("+").toLowerCase() ===
+              props.term[0].split(" ").join("+").toLowerCase()
+            );
+          });
+
+        setCategoryInfo({
+          color: categoryInfo[0].color,
+          banner: categoryInfo[0].banner,
+        });
       }
     } catch (err) {
       console.error(err.message);
-    } finally {
-      setLoading(false);
     }
   }
 
