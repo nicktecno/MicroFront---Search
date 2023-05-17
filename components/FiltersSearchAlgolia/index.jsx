@@ -11,6 +11,8 @@ import apiFacets from "../../services/apiFacets";
 import CustomRefinementListSearchMenuFilter from "../CustomRefinementListSearchMenuFilter";
 import CustomHierarchicalSearchMenuFilterCategory from "../CustomHierarchicalSearchMenuFilterCategory";
 
+import { Filter } from "@styled-icons/fa-solid/Filter";
+
 const FiltersSearchAlgolia = ({
   openFilters,
   closeFilters,
@@ -81,17 +83,7 @@ const FiltersSearchAlgolia = ({
           data-action="open-overlay"
           onClick={openFilters}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 14">
-            <path
-              d="M15 1H1l5.6 6.3v4.37L9.4 13V7.3z"
-              stroke="#ffffff"
-              strokeWidth="1.29"
-              fill="none"
-              fillRule="evenodd"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <Filter />
           {routeTranslations !== false &&
             routeTranslations?.labels?.buttonModal04}
         </button>
