@@ -393,6 +393,7 @@ function SearchComponent({
                         : ""
                     }
                     companyId={companyId}
+                    routeTranslations={routeTranslations}
                   />
                 </S.FacetsContainer>
                 <S.ProductsContainer>

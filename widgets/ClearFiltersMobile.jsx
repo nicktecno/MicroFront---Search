@@ -7,10 +7,7 @@ import {
   ClearRefinements,
 } from "react-instantsearch-dom";
 
-import { useLang } from "../Context/LangContext";
-
-const ClearFiltersMobile = ({ items, refine }) => {
-  const { routeTranslations } = useLang();
+const ClearFiltersMobile = ({ items, refine, routeTranslations }) => {
   // const history = useRouter();
 
   function handleFilter() {

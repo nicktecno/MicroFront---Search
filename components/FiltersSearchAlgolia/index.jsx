@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLang } from "../../Context/LangContext";
 
 import {
   ClearFiltersMobile,
@@ -18,8 +17,8 @@ const FiltersSearchAlgolia = ({
   closeFilters,
   slug,
   companyId,
+  routeTranslations,
 }) => {
-  const { routeTranslations } = useLang();
   const [facets, setFacets] = useState(false);
   async function getFacets() {
     try {
@@ -95,11 +94,14 @@ const FiltersSearchAlgolia = ({
         data-layout="mobile"
       >
         <div className="container-filters-footer-button-wrapper">
-          <ClearFiltersMobile />
+          <ClearFiltersMobile routeTranslations={routeTranslations} />
         </div>
 
         <div className="container-filters-footer-button-wrapper">
-          <SaveFiltersMobile onClick={closeFilters} />
+          <SaveFiltersMobile
+            onClick={closeFilters}
+            routeTranslations={routeTranslations}
+          />
         </div>
       </footer>
     </>
